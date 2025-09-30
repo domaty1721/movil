@@ -1,4 +1,4 @@
-name: Build Debug APK
+name: Build NativeScript APK
 
 on:
   push:
@@ -19,14 +19,22 @@ jobs:
           node-version: 18
 
       - name: Install NativeScript CLI
-        run: npm install nativescript --save-dev
+        run: npm install -g nativescript
 
-      - name: Install dependencies
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install project dependencies
         run: npm install
 
-      - name: Build Debug APK
-        run: |
-          ./node_modules/.bin/ns build android --debug
+      - name: Build APK
+        run: ns build android --debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
