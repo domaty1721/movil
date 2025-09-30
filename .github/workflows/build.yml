@@ -10,29 +10,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 17
-
-      - name: Install Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
+
+      - name: Install NativeScript CLI
+        run: npm install -g nativescript
 
       - name: Install dependencies
         run: npm install
 
       - name: Build APK
-        run: |
-          cd android
-          ./gradlew assembleRelease
+        run: ns build android --release --keyStorePath ${{ secrets.KEYSTORE_PATH }} --keyStorePassword ${{ secrets.KEYSTORE_PASSWORD }} --keyStoreAlias ${{ secrets.KEYSTORE_ALIAS }} --keyStoreAliasPassword ${{ secrets.KEYSTORE_ALIAS_PASSWORD }}
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-release.apk
-          path: android/app/build/outputs/apk/release/app-release.apk
+          path: platforms/android/app/build/outputs/apk/release/app-release.apk
