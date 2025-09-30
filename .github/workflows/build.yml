@@ -19,13 +19,14 @@ jobs:
           node-version: 18
 
       - name: Install NativeScript CLI
-        run: npm install -g nativescript
+        run: npm install nativescript --save-dev
 
       - name: Install dependencies
         run: npm install
 
       - name: Build Debug APK
-        run: npx ns build android --debug
+        run: |
+          ./node_modules/.bin/ns build android --debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
