@@ -5,9 +5,11 @@ workflows:
     environment:
       node: 20
     scripts:
-      - name: Install dependencies
+      - name: Install NativeScript
         script: npm install -g nativescript
-      - name: Build NativeScript Android APK
-        script: tns build android --release --keyStorePath $CM_KEYSTORE_PATH --keyStorePassword $CM_KEYSTORE_PASSWORD --keyStoreAlias $CM_KEYSTORE_ALIAS --keyStoreAliasPassword $CM_KEYSTORE_ALIAS_PASSWORD
+      - name: Install dependencies
+        script: npm install
+      - name: Build APK (Debug)
+        script: tns build android --debug
     artifacts:
       - platforms/android/app/build/outputs/**/*.apk
